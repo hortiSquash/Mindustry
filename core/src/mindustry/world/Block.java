@@ -90,6 +90,8 @@ public class Block extends UnlockableContent implements Senseable{
     public boolean destructible;
     /** whether unloaders work on this block */
     public boolean unloadable = true;
+    /** if true, this block acts a duct and will connect to armored ducts from the side. */
+    public boolean isDuct = false;
     /** whether units can resupply by taking items from this block */
     public boolean allowResupply = false;
     /** whether this is solid */
@@ -406,7 +408,7 @@ public class Block extends UnlockableContent implements Senseable{
                 PowerNode.getNodeLinks(tile, this, player.team(), other -> {
                     PowerNode node = (PowerNode)other.block;
                     Draw.color(node.laserColor1, Renderer.laserOpacity * 0.5f);
-                    node.drawLaser(tile.team(), x * tilesize + offset, y * tilesize + offset, other.x, other.y, size, other.block.size);
+                    node.drawLaser(x * tilesize + offset, y * tilesize + offset, other.x, other.y, size, other.block.size);
 
                     Drawf.square(other.x, other.y, other.block.size * tilesize / 2f + 2f, Pal.place);
                 });

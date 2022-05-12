@@ -1097,6 +1097,7 @@ public class Blocks{
         sporePress = new GenericCrafter("spore-press"){{
             requirements(Category.crafting, with(Items.lead, 35, Items.silicon, 30));
             liquidCapacity = 60f;
+            craftTime = 20f;
             outputLiquid = new LiquidStack(Liquids.oil, 18f / 60f);
             size = 2;
             health = 320;
@@ -1626,7 +1627,7 @@ public class Blocks{
 
         reinforcedSurgeWall = new Wall("reinforced-surge-wall"){{
             requirements(Category.defense, with(Items.surgeAlloy, 6, Items.tungsten, 2));
-            health = 230 * wallHealthMultiplier;
+            health = 250 * wallHealthMultiplier;
             lightningChance = 0.05f;
             lightningDamage = 30f;
             armor = 20f;
@@ -1634,7 +1635,7 @@ public class Blocks{
 
         reinforcedSurgeWallLarge = new Wall("reinforced-surge-wall-large"){{
             requirements(Category.defense, ItemStack.mult(reinforcedSurgeWall.requirements, 4));
-            health = 230 * wallHealthMultiplier * 4;
+            health = 250 * wallHealthMultiplier * 4;
             lightningChance = 0.05f;
             lightningDamage = 30f;
             armor = 20f;
@@ -1643,13 +1644,13 @@ public class Blocks{
 
         carbideWall = new Wall("carbide-wall"){{
             requirements(Category.defense, with(Items.thorium, 6, Items.carbide, 6));
-            health = 240 * wallHealthMultiplier;
+            health = 270 * wallHealthMultiplier;
             armor = 16f;
         }};
 
         carbideWallLarge = new Wall("carbide-wall-large"){{
             requirements(Category.defense, ItemStack.mult(carbideWall.requirements, 4));
-            health = 240 * wallHealthMultiplier * 4;
+            health = 270 * wallHealthMultiplier * 4;
             armor = 16f;
             size = 2;
         }};
@@ -1910,7 +1911,7 @@ public class Blocks{
             requirements(Category.distribution, with(Items.titanium, 125, Items.silicon, 75, Items.lead, 125, Items.thorium, 50));
             size = 3;
             itemCapacity = 120;
-            reloadTime = 200f;
+            reload = 200f;
             range = 440f;
             consumePower(1.75f);
         }};
@@ -2831,7 +2832,7 @@ public class Blocks{
             health = 250;
             inaccuracy = 2f;
             rotateSpeed = 10f;
-            coolant = consume(new ConsumeCoolant(0.1f));
+            coolant = consumeCoolant(0.1f);
 
             limitRange();
         }};
@@ -4399,7 +4400,7 @@ public class Blocks{
             requirements(Category.units, with(Items.tungsten, 120, Items.silicon, 120, Items.oxide, 25));
             regionSuffix = "-dark";
             size = 3;
-            reloadTime = 130f;
+            reload = 130f;
             chargeTime = 90f;
             range = 700f;
             maxPayloadSize = 2.5f;
@@ -4411,7 +4412,7 @@ public class Blocks{
             requirements(Category.units, with(Items.thorium, 300, Items.silicon, 200, Items.plastanium, 200, Items.phaseFabric, 50));
             regionSuffix = "-dark";
             size = 5;
-            reloadTime = 130f;
+            reload = 130f;
             chargeTime = 100f;
             range = 1100f;
             maxPayloadSize = 3.5f;
@@ -4666,6 +4667,7 @@ public class Blocks{
 
             privileged = true;
             memoryCapacity = 128;
+            forceDark = true;
         }};
 
         //endregion

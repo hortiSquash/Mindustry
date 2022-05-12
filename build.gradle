@@ -30,7 +30,7 @@ plugins{
 allprojects{
     apply plugin: 'maven-publish'
     
-    version = 'release'
+    version = project.hasProperty("packageVersion") ? project.getProperty("packageVersion") : 'release'
     group = 'com.github.Anuken'
 
     ext{
@@ -461,7 +461,7 @@ project(":annotations"){
     }
 }
 
-configure([":core", ":desktop", ":server", ":tools"].collect{project(it)}){
+configure([":core", ":server"].collect{project(it)}){
     java{
         withJavadocJar()
         withSourcesJar()
