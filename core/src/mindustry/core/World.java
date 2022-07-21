@@ -461,45 +461,57 @@ public class World{
         float dark = 0;
 
         if(Vars.state.rules.borderDarkness){
-            int edgeBlend = 2;
-            int edgeDst;
-
+            int dx, dy, tmpx = x, tmpy = y;
             if(!state.rules.limitMapArea){
-                edgeDst = Math.min(x, Math.min(y, Math.min(-(x - (tiles.width - 1)), -(y - (tiles.height - 1)))));
+                dx = tiles.width;
+                dy = tiles.height;
             }else{
-                edgeDst =
-                    Math.min(x - state.rules.limitX,
-                    Math.min(y - state.rules.limitY,
-                    Math.min(-(x - (state.rules.limitX + state.rules.limitWidth - 1)), -(y - (state.rules.limitY + state.rules.limitHeight - 1)))));
+                tmpx -= state.rules.limitX;
+                tmpy -= state.rules.limitY;
+                dx = state.rules.limitWidth;
+                dy = state.rules.limitHeight;
             }
 
+            int edgeDst =
+                Math.min(tmpx,
+                Math.min(tmpy,
+                -1 + Math.min(dx - tmpx,
+                              dy - tmpy
+                )));
+
+            int edgeBlend = 2;
             if(edgeDst <= edgeBlend){
-                dark = Math.max((edgeBlend - edgeDst) * (4f / edgeBlend), dark);
+                dark = 4f * (1 - edgeDst / edgeBlend); //(edgeBlend - edgeDst) * (4f / edgeBlend)
             }
         }
 
         if(state.hasSector() && state.getSector().preset == null){
-            int circleBlend = 5;
             //quantized angle
             float offset = state.getSector().rect.rotation + 90;
             float angle = Angles.angle(x, y, tiles.width/2, tiles.height/2) + offset;
+
             //polygon sides, depends on sector
             int sides = state.getSector().tile.corners.length;
             float step = 360f / sides;
+
             //prev and next angles of poly
             float prev = Mathf.round(angle, step);
             float next = prev + step;
+
             //raw line length to be translated
             float length = state.getSector().getSize()/2f;
-            float rawDst = Intersector.distanceLinePoint(Tmp.v1.trns(prev, length), Tmp.v2.trns(next, length), Tmp.v3.set(x - tiles.width/2, y - tiles.height/2).rotate(offset)) / Mathf.sqrt3 - 1;
+            float rawDst = Intersector.distanceLinePoint(
+                    Tmp.v1.trns(prev, length),
+                    Tmp.v2.trns(next, length),
+                    Tmp.v3.set(x - tiles.width/2, y - tiles.height/2).rotate(offset)
+                ) / Mathf.sqrt3 - 1;
 
             //noise
             rawDst += Noise.noise(x, y, 11f, 7f) + Noise.noise(x, y, 22f, 15f);
 
-            int circleDst = (int)(rawDst - (length - circleBlend));
-            if(circleDst > 0){
-                dark = Math.max(circleDst, dark);
-            }
+            int circleBlend = 5;
+            int circleDst = (int)(rawDst - length + circleBlend);
+            dark = Math.max(circleDst, dark);
         }
 
         Tile tile = tile(x, y);
