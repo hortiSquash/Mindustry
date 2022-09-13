@@ -35,6 +35,7 @@ import mindustry.world.blocks.*;
 import mindustry.world.blocks.environment.*;
 import mindustry.world.blocks.heat.*;
 import mindustry.world.blocks.heat.HeatConductor.*;
+import mindustry.world.blocks.liquid.*;
 import mindustry.world.blocks.logic.LogicBlock.*;
 import mindustry.world.blocks.payloads.*;
 import mindustry.world.blocks.power.*;
@@ -800,7 +801,7 @@ abstract class BuildingComp implements Posc, Teamc, Healthc, Buildingc, Timerc, 
                 float ofract = other.liquids.get(liquid) / other.block.liquidCapacity;
                 float fract = liquids.get(liquid) / block.liquidCapacity;
 
-                if(ofract < fract) transferLiquid(other, (fract - ofract) * block.liquidCapacity / scaling, liquid);
+                if(ofract < fract) transferLiquid(other, (fract - ofract) * block.liquidCapacity / (other.block instanceof LiquidRouter ? 2f: scaling), liquid);
             }
         }
     }
