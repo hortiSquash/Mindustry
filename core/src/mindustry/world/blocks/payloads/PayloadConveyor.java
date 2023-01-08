@@ -103,10 +103,20 @@ public class PayloadConveyor extends Block{
                 (accept.block.size == size && tileX() + Geometry.d4(rotation).x * size == accept.tileX() && tileY() + Geometry.d4(rotation).y * size == accept.tileY()) ||
 
                 //differing sizes
+                /*
+                (accept.block.size > size &&
+                    Math.abs(
+                        (rotation % 2 == 0 ?
+                        accept.y - y : //check Y alignment
+                        accept.x - x   //check X alignment
+                    )) * 2 <= (accept.block.size - size) * tilesize
+                //))){
+                */
+
                 (accept.block.size > size &&
                     (rotation % 2 == 0 ? //check orientation
-                    Math.abs(accept.y - y) <= (accept.block.size * tilesize - size * tilesize)/2f : //check Y alignment
-                    Math.abs(accept.x - x) <= (accept.block.size * tilesize - size * tilesize)/2f   //check X alignment
+                    Math.abs(accept.y - y) * 2 <= (accept.block.size - size) * tilesize : //check Y alignment
+                    Math.abs(accept.x - x) * 2 <= (accept.block.size - size) * tilesize   //check X alignment
                 )))){
                 next = accept;
             }else{

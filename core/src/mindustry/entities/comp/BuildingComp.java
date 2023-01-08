@@ -100,6 +100,7 @@ abstract class BuildingComp implements Posc, Teamc, Healthc, Buildingc, Timerc, 
     private transient boolean sleeping;
     private transient float sleepTime;
     private transient boolean initialized;
+    private transient float eff_timer;
 
     /** Sets this tile entity data to this and adds it if necessary. */
     public Building init(Tile tile, Team team, boolean shouldAdd, int rotation){
@@ -576,7 +577,13 @@ abstract class BuildingComp implements Posc, Teamc, Healthc, Buildingc, Timerc, 
             return BlockStatus.noInput;
         }
 
-        return BlockStatus.active;
+        eff_timer += efficiency;
+        eff_timer %= 1f;
+        if(eff_timer < efficiency){
+            return BlockStatus.active;
+        }else{
+            return BlockStatus.noInput;
+        }
     }
 
     /** Call when nothing is happening to the entity. This increments the internal sleep timer. */
